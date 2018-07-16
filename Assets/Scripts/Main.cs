@@ -1,5 +1,6 @@
 ﻿using FL.Controllers;
 using FL.Managers;
+using FL.Spaceships;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,13 +16,15 @@ namespace FL
 
         public static Main Instance { get; private set; }
         public GameObject Player { get; private set; }
+        public SpaceshipBase Spaceship { get; private set; }
 
 
-        void Start()
+        void Awake()
         {
             Instance = this;
 
             Player = GameObject.FindGameObjectWithTag("Player");
+            Spaceship = GameObject.FindGameObjectWithTag("Spaceship").GetComponent<SpaceshipBase>();
 
             _controllerGO = new GameObject(name = "Controllers");
 

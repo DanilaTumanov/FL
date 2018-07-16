@@ -12,13 +12,12 @@ namespace FL.Spaceships
     public class SpaceshipBase : BaseSceneObject
     {
 
-        private MovementSystem _movementSystem;
-
+        public MovementSystem MovementSystem { get; private set; }
 
 
         private void Start()
         {
-            _movementSystem = GetComponent<MovementSystem>();
+            MovementSystem = GetComponent<MovementSystem>();
         }
 
     }

@@ -178,7 +178,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 33.815002, y: 128.882, z: 135.98401}
---- !u!84 &202499398
+--- !u!84 &221916670
 RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -262,7 +262,7 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 722872209}
+      objectReference: {fileID: 1342181466}
     - target: {fileID: 114232464667645372, guid: da851a3d1585fbb4ca7f431488e28bc5,
         type: 2}
       propertyPath: outlineShaderMaterial
@@ -342,10 +342,45 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 4844074888182970, guid: da851a3d1585fbb4ca7f431488e28bc5, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4844074888182970, guid: da851a3d1585fbb4ca7f431488e28bc5, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: da851a3d1585fbb4ca7f431488e28bc5, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &722872209
+--- !u!1 &1096560696 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1287759656191602, guid: da851a3d1585fbb4ca7f431488e28bc5,
+    type: 2}
+  m_PrefabInternal: {fileID: 561256398}
+--- !u!114 &1096560697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1096560696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3c02bb3d5b44024a8b662c2f9f97234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1096560698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1096560696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6689cfe8794e10246aa5a978d9dacfbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!84 &1342181466
 RenderTexture:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
