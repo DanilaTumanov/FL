@@ -1,4 +1,5 @@
-﻿using FL.SceneObjects;
+﻿using FL.Managers;
+using FL.SceneObjects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace FL.Controllers
 
         private InteractionObject _hoveredInteraction;
         private InteractionObject _interactedObject;
-
+        
 
         private void OnValidate()
         {
@@ -42,7 +43,9 @@ namespace FL.Controllers
                 return;
 
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = InputMgr.Controller.PointerRay;
+
+            _hoveredInteraction = null;
 
             if (Physics.Raycast(ray, out hit, 10, interactionLayers))
             {
@@ -63,12 +66,12 @@ namespace FL.Controllers
                 return;
 
             if (_interactedObject == null 
-                && Input.GetMouseButtonDown(0))
+                && InputMgr.Controller.SelectDown)
             {
                 _interactedObject = _hoveredInteraction;
                 _interactedObject.Interact();
             }
-            else if (Input.GetMouseButtonDown(0))
+            else if (InputMgr.Controller.SelectDown)
             {
                 _interactedObject.StopInteract();
                 _interactedObject = null;

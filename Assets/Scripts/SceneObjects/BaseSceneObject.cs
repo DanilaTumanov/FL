@@ -85,8 +85,7 @@ namespace FL.SceneObjects
         {
             _rigidbody = GetComponent<Rigidbody>();
         }
-
-
+        
 
         public void SetLayer(int layer)
         {

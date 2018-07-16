@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using FL.Managers;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,21 +8,41 @@ using UnityEngine;
 namespace FL.SceneObjects
 {
 
-    public class InteractionSteering : InteractionObject
+    public class InteractionSteering : PositionTrackingInteraction
     {
 
-        public override void Interact()
-        {
-            base.Interact();
 
-            print("Start interaction with steering stick");
+        protected override void Update()
+        {
+            base.Update();
+
+            if (!_activeInteraction)
+                return;
+
+            ProcessSteering();
         }
+
 
         public override void StopInteract()
         {
             base.StopInteract();
 
-            print("Stop interaction with steering stick");
+            // После завершения взаимодействия возвращаем в исходное положение (отклонения сбросятся родителем)
+            ProcessSteering();
+        }
+
+
+        private void ProcessSteering()
+        {
+            VisualizeSteering();
+
+
+        }
+
+
+        private void VisualizeSteering()
+        {
+            transform.localRotation = Quaternion.Euler(_initialRotation.x + _deltaY, _initialRotation.y + _deltaZ, _initialRotation.z + _deltaX);
         }
 
     }

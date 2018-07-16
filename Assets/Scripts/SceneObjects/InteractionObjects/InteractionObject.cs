@@ -11,17 +11,22 @@ namespace FL.SceneObjects
     public abstract class InteractionObject : BaseSceneObject
     {
 
+        /// <summary>
+        /// Признак активного взаимодействия
+        /// </summary>
+        protected bool _activeInteraction = false;
+
         private Outline _outline;
 
 
-        private void Start()
+        protected virtual void Start()
         {
             _outline = GetComponent<Outline>();
             SetActiveOutline(false);
         }
 
 
-        private void Update()
+        protected virtual void Update()
         {
             SetActiveOutline(false);
         }
@@ -30,12 +35,14 @@ namespace FL.SceneObjects
         public virtual void Interact()
         {
             SetActiveOutline(false);
+            _activeInteraction = true;
         }
 
 
         public virtual void StopInteract()
         {
             SetActiveOutline(false);
+            _activeInteraction = false;
         }
 
 
