@@ -16,7 +16,7 @@ namespace FL
 
         public static Main Instance { get; private set; }
         public GameObject Player { get; private set; }
-        public SpaceshipBase Spaceship { get; private set; }
+        public Spaceship Spaceship { get; private set; }
 
 
         void Awake()
@@ -24,7 +24,7 @@ namespace FL
             Instance = this;
 
             Player = GameObject.FindGameObjectWithTag("Player");
-            Spaceship = GameObject.FindGameObjectWithTag("Spaceship").GetComponent<SpaceshipBase>();
+            Spaceship = GameObject.FindGameObjectWithTag("Spaceship").GetComponent<Spaceship>();
 
             _controllerGO = new GameObject(name = "Controllers");
 

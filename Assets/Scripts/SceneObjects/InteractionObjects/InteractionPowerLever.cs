@@ -10,24 +10,18 @@ namespace FL.SceneObjects
     public class InteractionPowerLever : PositionTrackingInteraction
     {
 
-
-        private MovementSystem _movementSystem;
-
+        public float PowerLevel { get; private set; }
 
 
 
         protected override void Start()
         {
             base.Start();
-
-            _movementSystem = Main.Instance.Spaceship.MovementSystem;
         }
 
 
-        protected override void Update()
+        protected void LateUpdate()
         {
-            base.Update();
-
             if (!_activeInteraction)
                 return;
 
@@ -45,8 +39,7 @@ namespace FL.SceneObjects
         {
             VisualizeLever();
 
-            // TODO: Сделать уровень от 0 до 1
-            _movementSystem.SetForce(AbsDeltaY);
+            PowerLevel = RelDeltaY;
         }
 
 

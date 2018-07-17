@@ -27,7 +27,7 @@ namespace FL.SceneObjects
         {
             base.StopInteract();
 
-            // После завершения взаимодействия возвращаем в исходное положение (отклонения сбросятся родителем)
+            // После завершения взаимодействия возвращаем в исходное положение (если отклонения сбрасываются родителем)
             ProcessSteering();
         }
 
@@ -42,7 +42,7 @@ namespace FL.SceneObjects
 
         private void VisualizeSteering()
         {
-            transform.localRotation = Quaternion.Euler(_initialRotation.x + AbsDeltaY, _initialRotation.y + AbsDeltaZ, _initialRotation.z - AbsDeltaX);
+            transform.localRotation = Quaternion.Euler(_initialRotation.x + AbsDeltaY, _initialRotation.y + AbsDeltaZ, _initialRotation.z - AbsDeltaX); 
         }
 
     }
