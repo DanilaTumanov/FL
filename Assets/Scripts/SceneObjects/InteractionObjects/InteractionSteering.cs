@@ -42,7 +42,7 @@ namespace FL.SceneObjects
 
         private void VisualizeSteering()
         {
-            transform.localRotation = Quaternion.Euler(_initialRotation.x + _deltaY, _initialRotation.y + _deltaZ, _initialRotation.z + _deltaX);
+            transform.localRotation = Quaternion.Euler(_initialRotation.x + AbsDeltaY, _initialRotation.y + AbsDeltaZ, _initialRotation.z - AbsDeltaX);
         }
 
     }

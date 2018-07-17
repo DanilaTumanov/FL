@@ -40,22 +40,7 @@ namespace FL.SceneObjects
         private float _initialDeltaX;
         private float _initialDeltaY;
         private float _initialDeltaZ;
-
-
-        /// <summary>
-        /// Угол отклонения по X
-        /// </summary>
-        protected float _deltaX;
-
-        /// <summary>
-        /// Угол отклонения по Y
-        /// </summary>
-        protected float _deltaY;
-
-        /// <summary>
-        /// Угол отклонения по Z
-        /// </summary>
-        protected float _deltaZ;
+        
 
         /// <summary>
         /// Система координат для рассчета (корабль или связанная с ним система)
@@ -64,6 +49,41 @@ namespace FL.SceneObjects
 
 
         protected Vector3 _initialRotation;
+
+
+        /// <summary>
+        /// Угол отклонения по X в градусах
+        /// </summary>
+        public float AbsDeltaX { get; private set; }
+
+        /// <summary>
+        /// Угол отклонения по Y в градусах
+        /// </summary>
+        public float AbsDeltaY { get; private set; }
+
+        /// <summary>
+        /// Угол отклонения по Z в градусах
+        /// </summary>
+        public float AbsDeltaZ { get; private set; }
+
+
+        /// <summary>
+        /// Отклонение по X в относительной величине (1 - максимальное)
+        /// </summary>
+        public float RelDeltaX { get; private set; }
+
+        /// <summary>
+        /// Отклонение по Y в относительной величине (1 - максимальное)
+        /// </summary>
+        public float RelDeltaY { get; private set; }
+
+        /// <summary>
+        /// Отклонение по Z в относительной величине (1 - максимальное)
+        /// </summary>
+        public float RelDeltaZ { get; private set; }
+
+
+
 
 
 
@@ -106,9 +126,9 @@ namespace FL.SceneObjects
         {
             base.StopInteract();
 
-            _deltaX = keepDeltaX ? _deltaX : 0;
-            _deltaY = keepDeltaY ? _deltaY : 0;
-            _deltaZ = keepDeltaZ ? _deltaZ : 0;
+            AbsDeltaX = keepDeltaX ? AbsDeltaX : 0;
+            AbsDeltaY = keepDeltaY ? AbsDeltaY : 0;
+            AbsDeltaZ = keepDeltaZ ? AbsDeltaZ : 0;
         }
 
 
@@ -120,25 +140,31 @@ namespace FL.SceneObjects
             SetProjections(direction, _coordinateSystem, out horizontalProj, out verticalProj);
 
             // Определяем угол
-            _deltaX = Vector3.Angle(_initialHorizontalProj, horizontalProj);
-            _deltaY = Vector3.Angle(_initialVerticalProj, verticalProj);
+            AbsDeltaX = Vector3.Angle(_initialHorizontalProj, horizontalProj);
+            AbsDeltaY = Vector3.Angle(_initialVerticalProj, verticalProj);
 
             // Определяем знак угла
-            _deltaX *= Mathf.Sign(Vector3.Dot(horizontalProj, _initialHorizontalPerp));
-            _deltaY *= Mathf.Sign(Vector3.Dot(verticalProj, _initialVecrticalPerp));
+            AbsDeltaX *= Mathf.Sign(Vector3.Dot(horizontalProj, _initialHorizontalPerp));
+            AbsDeltaY *= Mathf.Sign(Vector3.Dot(verticalProj, _initialVecrticalPerp));
 
             // Определяем угол наклона
-            _deltaZ = Mathf.DeltaAngle(INITIAL_Z_ANGLE, InputMgr.Controller.ControllerRotation.eulerAngles.z);
+            AbsDeltaZ = Mathf.DeltaAngle(INITIAL_Z_ANGLE, InputMgr.Controller.ControllerRotation.eulerAngles.z);
 
             // Корректируем отклонение в зависимости от отклонения в начале взаимодействия
-            _deltaX += _initialDeltaX;
-            _deltaY += _initialDeltaY;
-            _deltaZ += _initialDeltaZ;
+            AbsDeltaX += _initialDeltaX;
+            AbsDeltaY += _initialDeltaY;
+            AbsDeltaZ += _initialDeltaZ;
 
             // Обрезаем значения по установленным границам
-            _deltaX = Xbounds.SqrMagnitude() > 0 ? Mathf.Clamp(_deltaX, Xbounds.x, Xbounds.y) : _deltaX;
-            _deltaY = Ybounds.SqrMagnitude() > 0 ? Mathf.Clamp(_deltaY, Ybounds.x, Ybounds.y) : _deltaY;
-            _deltaZ = Zbounds.SqrMagnitude() > 0 ? Mathf.Clamp(_deltaZ, Zbounds.x, Zbounds.y) : _deltaZ;
+            AbsDeltaX = Xbounds.SqrMagnitude() > 0 ? Mathf.Clamp(AbsDeltaX, Xbounds.x, Xbounds.y) : AbsDeltaX;
+            AbsDeltaY = Ybounds.SqrMagnitude() > 0 ? Mathf.Clamp(AbsDeltaY, Ybounds.x, Ybounds.y) : AbsDeltaY;
+            AbsDeltaZ = Zbounds.SqrMagnitude() > 0 ? Mathf.Clamp(AbsDeltaZ, Zbounds.x, Zbounds.y) : AbsDeltaZ;
+
+
+            // Рассчитываем относительное отклонение
+            RelDeltaX = GetRelativeDelta(AbsDeltaX, Xbounds);
+            RelDeltaY = GetRelativeDelta(AbsDeltaY, Ybounds);
+            RelDeltaZ = GetRelativeDelta(AbsDeltaZ, Zbounds);
         }
 
 
@@ -158,16 +184,27 @@ namespace FL.SceneObjects
         /// <param name="verticalPerp"></param>
         private void SetInitialPerpendiculars(Vector3 horizontalProj, Vector3 verticalProj, out Vector3 horizontalPerp, out Vector3 verticalPerp)
         {
-            horizontalPerp = Vector3.Cross(horizontalProj, _coordinateSystem.up);
+            horizontalPerp = Vector3.Cross(_coordinateSystem.up, horizontalProj);
             verticalPerp = Vector3.Cross(verticalProj, _coordinateSystem.right);
         }
 
 
         private void SetInitialDelta()
         {
-            _initialDeltaX = _deltaX;
-            _initialDeltaY = _deltaY;
-            _initialDeltaZ = _deltaZ;
+            _initialDeltaX = AbsDeltaX;
+            _initialDeltaY = AbsDeltaY;
+            _initialDeltaZ = AbsDeltaZ;
+        }
+
+
+        private float GetRelativeDelta(float absDelta, Vector2 bounds)
+        {
+            if (bounds.y > 0)
+                return absDelta / bounds.y;
+            else if (Xbounds.x > 0)
+                return absDelta / -bounds.x;
+            else
+                return absDelta / 180;
         }
 
     }

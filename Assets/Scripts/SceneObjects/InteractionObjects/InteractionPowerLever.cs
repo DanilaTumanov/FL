@@ -46,13 +46,13 @@ namespace FL.SceneObjects
             VisualizeLever();
 
             // TODO: Сделать уровень от 0 до 1
-            _movementSystem.SetForce(_deltaY);
+            _movementSystem.SetForce(AbsDeltaY);
         }
 
 
         private void VisualizeLever()
         {
-            transform.rotation = Quaternion.Euler(_initialRotation.x + _deltaY, _initialRotation.y, _initialRotation.z);
+            transform.rotation = Quaternion.Euler(_initialRotation.x + AbsDeltaY, _initialRotation.y, _initialRotation.z);
         }
 
     }
