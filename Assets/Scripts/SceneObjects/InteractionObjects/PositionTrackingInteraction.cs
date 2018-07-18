@@ -115,7 +115,7 @@ namespace FL.SceneObjects
 
             _initialDirection = _coordinateSystem.InverseTransformDirection(InputMgr.Controller.PointerRay.direction);
 
-            SetProjections(_initialDirection, _coordinateSystem, out _initialHorizontalProj, out _initialVerticalProj);
+            SetProjections(_initialDirection, out _initialHorizontalProj, out _initialVerticalProj);
             SetInitialPerpendiculars(_initialHorizontalProj, _initialVerticalProj, out _initialHorizontalPerp, out _initialVecrticalPerp);
             SetInitialDelta();
         }
@@ -137,8 +137,8 @@ namespace FL.SceneObjects
             var direction = _coordinateSystem.InverseTransformDirection(InputMgr.Controller.PointerRay.direction);
             Vector3 verticalProj, horizontalProj;
 
-            SetProjections(direction, _coordinateSystem, out horizontalProj, out verticalProj);
-
+            SetProjections(direction, out horizontalProj, out verticalProj);
+            
             // Определяем угол
             AbsDeltaX = Vector3.Angle(_initialHorizontalProj, horizontalProj);
             AbsDeltaY = Vector3.Angle(_initialVerticalProj, verticalProj);
@@ -168,10 +168,10 @@ namespace FL.SceneObjects
         }
 
 
-        private void SetProjections(Vector3 origin, Transform coordinateSystem, out Vector3 horizontalProj, out Vector3 verticalProj)
+        private void SetProjections(Vector3 origin, out Vector3 horizontalProj, out Vector3 verticalProj)
         {
-            horizontalProj = Vector3.ProjectOnPlane(origin, _coordinateSystem.up);
-            verticalProj = Vector3.ProjectOnPlane(origin, _coordinateSystem.right);
+            horizontalProj = Vector3.ProjectOnPlane(origin, Vector3.up);
+            verticalProj = Vector3.ProjectOnPlane(origin, Vector3.right);
         }
 
         /// <summary>
@@ -184,8 +184,8 @@ namespace FL.SceneObjects
         /// <param name="verticalPerp"></param>
         private void SetInitialPerpendiculars(Vector3 horizontalProj, Vector3 verticalProj, out Vector3 horizontalPerp, out Vector3 verticalPerp)
         {
-            horizontalPerp = Vector3.Cross(_coordinateSystem.up, horizontalProj);
-            verticalPerp = Vector3.Cross(verticalProj, _coordinateSystem.right);
+            horizontalPerp = Vector3.Cross(Vector3.up, horizontalProj);
+            verticalPerp = Vector3.Cross(verticalProj, Vector3.right);
         }
 
 

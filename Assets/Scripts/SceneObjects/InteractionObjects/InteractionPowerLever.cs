@@ -45,7 +45,7 @@ namespace FL.SceneObjects
 
         private void VisualizeLever()
         {
-            transform.rotation = Quaternion.Euler(_initialRotation.x + AbsDeltaY, _initialRotation.y, _initialRotation.z);
+            transform.localRotation = Quaternion.Euler(_initialRotation.x + AbsDeltaY, _initialRotation.y, _initialRotation.z);
         }
 
     }

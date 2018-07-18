@@ -14,14 +14,14 @@ namespace FL.Spaceships
 
         public MovementSystem MovementSystem { get; private set; }
         public InteractionPowerLever PowerControl { get; private set; }
-        //public PositionTrackingInteraction Steering { get; private set; }
+        public InteractionSteering Steering { get; private set; }
 
 
         private void Start()
         {
             MovementSystem = GetComponent<MovementSystem>();
             PowerControl = GameObject.FindGameObjectWithTag("PowerControl").GetComponent<InteractionPowerLever>();
-            //Steering = GameObject.FindGameObjectWithTag("Steering").GetComponent<PositionTrackingInteraction>();
+            Steering = GameObject.FindGameObjectWithTag("Steering").GetComponent<InteractionSteering>();
         }
 
     }

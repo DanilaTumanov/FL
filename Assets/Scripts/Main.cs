@@ -44,7 +44,7 @@ namespace FL
         private void EmulateControllerRotation()
         {
             var rotation = (InputMgr.Controller as PCInput).controllerRotationEmu;
-            (InputMgr.Controller as PCInput).controllerRotationEmu = Quaternion.Euler(0, 0, rotation.eulerAngles.z + Input.GetAxis("Horizontal"));
+            (InputMgr.Controller as PCInput).controllerRotationEmu = Quaternion.Euler(0, 0, rotation.eulerAngles.z - Input.GetAxis("Horizontal"));
         }
 
 #endif
