@@ -135,7 +135,14 @@ namespace FL.SceneObjects
         private void ProcessDelta()
         {
             var direction = _coordinateSystem.InverseTransformDirection(InputMgr.Controller.PointerRay.direction);
+
+            // Переводим поворот контроллера из мирового значения в значение, относительно поворота корабля
+            // TODO: разобраться, как это работает))))
+            var relativeControllerRotation = Quaternion.Inverse(_coordinateSystem.rotation) * InputMgr.Controller.ControllerRotation;
+
             Vector3 verticalProj, horizontalProj;
+
+
 
             SetProjections(direction, out horizontalProj, out verticalProj);
             
@@ -148,7 +155,7 @@ namespace FL.SceneObjects
             AbsDeltaY *= Mathf.Sign(Vector3.Dot(verticalProj, _initialVecrticalPerp));
 
             // Определяем угол наклона
-            AbsDeltaZ = Mathf.DeltaAngle(INITIAL_Z_ANGLE, InputMgr.Controller.ControllerRotation.eulerAngles.z);
+            AbsDeltaZ = Mathf.DeltaAngle(INITIAL_Z_ANGLE, relativeControllerRotation.eulerAngles.z);
 
             // Корректируем отклонение в зависимости от отклонения в начале взаимодействия
             AbsDeltaX += _initialDeltaX;

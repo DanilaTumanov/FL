@@ -23,7 +23,11 @@ namespace FL.Managers
 
         static InputMgr()
         {
+#if UNITY_EDITOR
             _inputController = new PCInput();
+#elif UNITY_ANDROID
+            _inputController = new GearVRInput();
+#endif
         }
 
         
